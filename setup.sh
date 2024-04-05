@@ -45,6 +45,7 @@ pylint --generate-rcfile > .pylintrc
 # Install pre-commit in the virtual environment
 echo "Installing pre-commit in the virtual environment..."
 pip install pre-commit
+pre-commit install
 
 # Add pre-commit configuration
 echo "Adding pre-commit configuration..."
