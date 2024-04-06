@@ -33,6 +33,8 @@ class ServiceGetUrlFromShortCode(Servicer):
     def run(self):
         Logger.emit('Starting the service to search for url')
         short_code = self.connector.read_by_short_code(self.short_code)
+        Logger.emit('Updating the count of short code')
+        self.connector.update_use_short_code(self.short_code)
         if short_code:
             return short_code.url
         return None

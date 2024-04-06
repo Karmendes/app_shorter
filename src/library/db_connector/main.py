@@ -1,5 +1,7 @@
-from sqlalchemy import create_engine
+from datetime import datetime
+from sqlalchemy import create_engine,update
 from sqlalchemy.orm import sessionmaker
+
 
 connections = {
     "shorter":
@@ -30,4 +32,13 @@ class DBConnector:
         self.session.commit()
     def read_by_short_code(self,short_code):
         return self.session.query(self.model).filter_by(short_code=short_code).first()
+    def update_use_short_code(self,short_code):
+        # Create an update statement targeting the ShortURL table
+        update_stmt = update(self.model).where(self.model.short_code == short_code)
+        # Increment the redirectcount by 1
+        update_stmt = update_stmt.values(redirectcount=self.model.redirectcount + 1)
+        update_stmt = update_stmt.values(lastredirect = datetime.now().isoformat())
+        # Execute the update statement
+        self.session.execute(update_stmt)
+        self.session.commit()
     
