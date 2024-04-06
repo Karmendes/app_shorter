@@ -5,7 +5,7 @@ from src.library.db_connector.models import ShortURL
 
 
 connections = {
-    "prod":
+    "production":
     {
         'user':'postgres',
         'pwd':'postgres',
