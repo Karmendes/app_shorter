@@ -24,5 +24,8 @@ class DBConnector:
         self.engine = create_engine(f"{self.connection['server']}://{self.connection['user']}:{self.connection['pwd']}@{self.connection['host']}:{self.connection['port']}/{self.connection['db']}?options=-csearch_path%3D{self.connection['schema']}")
         self.session_maker = sessionmaker(bind=self.engine)
         self.session = self.session_maker()
-        self.cursor = self.session.query(self.model)
+    def insert_by_dict(self,data):
+        model = self.model(**data)
+        self.session.add(model)
+        self.session.commit()
     
