@@ -38,3 +38,16 @@ class ServiceGetUrlFromShortCode(Servicer):
         if short_code:
             return short_code.url
         return None
+
+class ServiceGetStats(Servicer):
+    def __init__(self,connector,short_code):
+        self.connector = connector
+        self.short_code = short_code
+    def run(self):
+        row_short_code = self.connector.read_by_short_code(self.short_code)
+        data = {
+            'created': row_short_code.created,
+            'lastRedirect': row_short_code.lastredirect,
+            'redirectCount': row_short_code.redirectcount
+        }
+        return data
