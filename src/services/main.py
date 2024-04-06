@@ -46,8 +46,8 @@ class ServiceGetStats(Servicer):
     def run(self):
         row_short_code = self.connector.read_by_short_code(self.short_code)
         data = {
-            'created': row_short_code.created,
-            'lastRedirect': row_short_code.lastredirect,
+            'created': row_short_code.created.isoformat(),
+            'lastRedirect': row_short_code.lastredirect.isoformat(),
             'redirectCount': row_short_code.redirectcount
         }
         return data

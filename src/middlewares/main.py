@@ -29,14 +29,6 @@ class ValidateNewShortCode(ValidateRoute):
             result = validate_shortcode_in_use(response)
             if result is not None:
                 return result
-        # if 'url' not in self.data:
-        #     return Response("Key 'url' not found", mimetype= 'text/plain', status=400)
-        # if 'shortcode' in self.data:
-        #     response = self.repositoy.read_by_short_code(self.data['shortcode'])
-        #     if response is not None:
-        #         return Response("Shortcode already in use", mimetype= 'text/plain', status=409)
-        #     if validate_string(self.data['shortcode']):
-        #         return Response("The provided shortcode is invalid", mimetype= 'text/plain', status=412)
         return self.data
 class ValidateExistShortCode(ValidateRoute):
     def __init__(self,data,respository):
@@ -47,8 +39,6 @@ class ValidateExistShortCode(ValidateRoute):
         result = validate_shortcode_exist(response)
         if result is not None:
             return result
-        # if response is None:
-        #     return Response("Shortcode not found", mimetype= 'text/plain', status=404)
         return self.data
 def choose_middleware(route):
     if route.endswith("/shorten"):
