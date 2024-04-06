@@ -1,9 +1,9 @@
 from abc import ABC,abstractmethod
 from werkzeug.wrappers import Request,Response
-from src.library.utils.main import validate_string
 from src.library.db_connector.main import RepositoryShortURL,DBConnector
 from src.library.db_connector.models import ShortURL
 from src.library.logger.main import Logger
+from src.middlewares.checks import validate_shortcode_in_use,validate_shortcode_validity,validate_url_presence,validate_shortcode_exist
 
 USER = 'production'
 
@@ -18,14 +18,25 @@ class ValidateNewShortCode(ValidateRoute):
         self.data = data
         self.repositoy = repository
     def validate(self):
-        if 'url' not in self.data:
-            return Response("Key 'url' not found", mimetype= 'text/plain', status=400)
+        result = validate_url_presence(self.data)
+        if result is not None:
+            return result
         if 'shortcode' in self.data:
+            result = validate_shortcode_validity(self.data)
+            if result is not None:
+                return result
             response = self.repositoy.read_by_short_code(self.data['shortcode'])
-            if response is not None:
-                return Response("Shortcode already in use", mimetype= 'text/plain', status=409)
-            if validate_string(self.data['shortcode']):
-                return Response("The provided shortcode is invalid", mimetype= 'text/plain', status=412)
+            result = validate_shortcode_in_use(response)
+            if result is not None:
+                return result
+        # if 'url' not in self.data:
+        #     return Response("Key 'url' not found", mimetype= 'text/plain', status=400)
+        # if 'shortcode' in self.data:
+        #     response = self.repositoy.read_by_short_code(self.data['shortcode'])
+        #     if response is not None:
+        #         return Response("Shortcode already in use", mimetype= 'text/plain', status=409)
+        #     if validate_string(self.data['shortcode']):
+        #         return Response("The provided shortcode is invalid", mimetype= 'text/plain', status=412)
         return self.data
 class ValidateExistShortCode(ValidateRoute):
     def __init__(self,data,respository):
@@ -33,8 +44,11 @@ class ValidateExistShortCode(ValidateRoute):
         self.repository = respository
     def validate(self):
         response =self.repository.read_by_short_code(self.data['shortcode'])
-        if response is None:
-            return Response("Shortcode not found", mimetype= 'text/plain', status=404)
+        result = validate_shortcode_exist(response)
+        if result is not None:
+            return result
+        # if response is None:
+        #     return Response("Shortcode not found", mimetype= 'text/plain', status=404)
         return self.data
 def choose_middleware(route):
     if route.endswith("/shorten"):
