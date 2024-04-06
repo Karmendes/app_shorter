@@ -25,3 +25,14 @@ class ServicerCreateShortLink(Servicer):
         Logger.emit('Saving the shortcode on database')
         self.connector.insert_by_dict(data)
         return self.short_code
+
+class ServiceGetUrlFromShortCode(Servicer):
+    def __init__(self,connector,short_code):
+        self.connector = connector
+        self.short_code = short_code
+    def run(self):
+        Logger.emit('Starting the service to search for url')
+        short_code = self.connector.read_by_short_code(self.short_code)
+        if short_code:
+            return short_code.url
+        return None

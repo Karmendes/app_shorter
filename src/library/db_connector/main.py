@@ -28,4 +28,6 @@ class DBConnector:
         model = self.model(**data)
         self.session.add(model)
         self.session.commit()
+    def read_by_short_code(self,short_code):
+        return self.session.query(self.model).filter_by(short_code=short_code).first()
     
