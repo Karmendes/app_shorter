@@ -69,7 +69,7 @@ repos:
     hooks:
       - id: requirements
         name: requirements
-        entry: bash -c '$virtualenv_name/bin/pip freeze > requirements.txt; git add requirements.txt'
+        entry: bash -c 'pip freeze > requirements.txt; git add requirements.txt'
         language: system
         pass_filenames: false
         stages: [commit]
