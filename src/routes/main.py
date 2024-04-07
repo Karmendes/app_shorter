@@ -29,7 +29,7 @@ def create_shortcode():
     result = service.run()
     return jsonify({"shortcode":result}), 201
 @routes.route("/<shortcode>", methods=["GET"])
-def calc_square(shortcode):
+def get_redirect(shortcode):
     service = ServiceGetUrlFromShortCode(RepositoryShortURL(DBConnector(USER,ShortURL)),shortcode)
     result = service.run()
     return redirect(result, code=302)

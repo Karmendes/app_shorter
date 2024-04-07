@@ -1,0 +1,12 @@
+services:
+  api-flask-service:
+    build:
+      context: ./
+    ports:
+      - "5000:5000"
+  
+  database-service:
+    build:
+      context: ./infra/
+    ports:
+      - "5432:5432"

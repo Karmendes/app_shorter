@@ -9,7 +9,7 @@ connections = {
     {
         'user':'postgres',
         'pwd':'postgres',
-        'host':'localhost',
+        'host':'database-service',
         'db':'db_shorter',
         'port':5432,
         'schema':'sc_shorter',
@@ -19,7 +19,7 @@ connections = {
     {
         'user':'postgres',
         'pwd':'postgres',
-        'host':'localhost',
+        'host':'database-service',
         'db':'db_shorter',
         'port':5432,
         'schema':'sc_shorter',
